@@ -1,4 +1,4 @@
-package com.example.youtubeapi.base
+package com.example.youtubeapi.core.uiBase
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity

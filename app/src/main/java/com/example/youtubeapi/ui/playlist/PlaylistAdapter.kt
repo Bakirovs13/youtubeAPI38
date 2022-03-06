@@ -1,28 +1,25 @@
-package com.example.youtubeapi.adapters
+package com.example.youtubeapi.ui.playlist
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.example.youtubeapi.R
 import com.example.youtubeapi.data.models.Items
 import com.example.youtubeapi.databinding.ItemPlaylistRvBinding
+import com.example.youtubeapi.core.extensions.load
 
-class PlaylistAdapter(private val list:List<Items>,private val listener:OnItemClickListener): RecyclerView.Adapter<PlaylistAdapter.ViewHolder>() {
+class PlaylistAdapter(private val list:List<Items>,private val clickListener:(id:String)->Unit): RecyclerView.Adapter<PlaylistAdapter.ViewHolder>() {
 
     lateinit var binding:ItemPlaylistRvBinding
 
-    inner class ViewHolder(itemView: ItemPlaylistRvBinding)
+    inner class ViewHolder(binding: ItemPlaylistRvBinding)
         :RecyclerView.ViewHolder(binding.root){
-        @SuppressLint("SetTextI18n")
         fun onBind(items: Items) {
-            Glide.with(binding.root)
-                .load(items.snippet.thumbnails.default.url)
-                .into(binding.imageEv)
+            binding.imageEv.load(items.snippet.thumbnails.default.url)
             binding.playlistNameTv.text = items.snippet.title
-            binding.playlistCountTv.text = items.contentDetails.itemCount.toString() + "video series"
+            binding.playlistCountTv.text = String.format(itemView.context.getString(R.string.videoSeries),items.contentDetails.itemCount.toString())
             itemView.setOnClickListener{
-                listener.onItemClick(items.id)
+                clickListener(items.id)
             }
         }
 
@@ -39,7 +36,5 @@ class PlaylistAdapter(private val list:List<Items>,private val listener:OnItemCl
 
     override fun getItemCount(): Int  = list.size
 
-    interface OnItemClickListener{
-        fun onItemClick(id : String)
-    }
+
 }
