@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 
+
 abstract class BaseActivity<VM: BaseViewModel,VB: ViewBinding> : AppCompatActivity() {
+
 
     protected lateinit var binding: VB
     protected  abstract val viewModel: VM
@@ -25,7 +27,7 @@ abstract class BaseActivity<VM: BaseViewModel,VB: ViewBinding> : AppCompatActivi
 
     open fun initView() {}
     open fun initListener() {}
-    open fun checkInternet() {}
+    open fun checkInternet(){}
     open fun initViewModel() {}
 
 }

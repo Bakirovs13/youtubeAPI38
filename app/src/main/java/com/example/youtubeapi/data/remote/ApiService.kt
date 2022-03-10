@@ -14,4 +14,14 @@ interface ApiService {
         @Query("key")apiKey:String,
         @Query("maxResults")maxResult:Int
     ):Call<Playlist>
+
+
+    @GET("playlistItems")
+     fun getPlaylistItems(
+        @Query("part") part: String,
+        @Query("playlistId") channelId: String,
+        @Query("key") key: String,
+        @Query("maxResults") maxResults: Int,
+        @Query("pageToken") pageToken: String?
+    ): Call<Playlist>
 }

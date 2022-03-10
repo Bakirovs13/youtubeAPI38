@@ -8,13 +8,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_marginStart="16dp"
-        android:layout_marginVertical="16dp"
+        android:layout_marginStart="@dimen/CardViewDp"
+        android:layout_marginVertical="@dimen/CardViewDp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:cardCornerRadius="12dp"
-        android:layout_width="120dp"
-        android:layout_height="80dp">
+        android:layout_width="@dimen/CardViewWidth"
+        android:layout_height="@dimen/CardViewHeight">
 
 
         <ImageView
@@ -28,12 +28,12 @@
 
         <TextView
             android:id="@+id/playlist_tv"
-            android:paddingVertical="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:background="#9C000000"
+            android:background="@color/semiBlack"
             android:gravity="center"
+            android:paddingVertical="4dp"
             android:text="@string/playlist_title"
             android:textColor="@color/white"
             android:textSize="12sp" />
@@ -55,7 +55,6 @@
 
 
         <TextView
-
             android:id="@+id/playlistName_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

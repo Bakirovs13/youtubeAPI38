@@ -7,8 +7,9 @@ import com.example.youtubeapi.R
 import com.example.youtubeapi.data.models.Items
 import com.example.youtubeapi.databinding.ItemPlaylistRvBinding
 import com.example.youtubeapi.core.extensions.load
+import kotlin.reflect.KFunction3
 
-class PlaylistAdapter(private val list:List<Items>,private val clickListener:(id:String)->Unit): RecyclerView.Adapter<PlaylistAdapter.ViewHolder>() {
+class PlaylistAdapter(private val list:List<Items>, private val clickListener: KFunction3<String, String, String, Unit>): RecyclerView.Adapter<PlaylistAdapter.ViewHolder>() {
 
     lateinit var binding:ItemPlaylistRvBinding
 
@@ -19,7 +20,7 @@ class PlaylistAdapter(private val list:List<Items>,private val clickListener:(id
             binding.playlistNameTv.text = items.snippet.title
             binding.playlistCountTv.text = String.format(itemView.context.getString(R.string.videoSeries),items.contentDetails.itemCount.toString())
             itemView.setOnClickListener{
-                clickListener(items.id)
+                clickListener(items.id,items.snippet.title,items.snippet.description)
             }
         }
 

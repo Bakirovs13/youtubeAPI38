@@ -9,7 +9,6 @@ import com.example.youtubeapi.data.models.Playlist
 class MyPlaylistViewModel:BaseViewModel() {
 
 
-
     fun getPlaylists():LiveData<Resource<Playlist>> {
         return App().repository.getPlaylists()
     }
