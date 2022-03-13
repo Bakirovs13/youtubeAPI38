@@ -1,15 +1,12 @@
 package com.example.youtubeapi.ui.playlistDetail
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkRequest
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.youtubeapi.core.extensions.gone
 import com.example.youtubeapi.core.extensions.visible
+import com.example.youtubeapi.ui.InternetConnection
 import com.example.youtubeapi.core.network.result.Status
 import com.example.youtubeapi.core.uiBase.BaseActivity
 import com.example.youtubeapi.core.uiBase.BaseViewModel
@@ -17,13 +14,12 @@ import com.example.youtubeapi.data.models.Playlist
 import com.example.youtubeapi.databinding.ActivityPlaylistDetailBinding
 import com.example.youtubeapi.ui.video.VideoActivity
 import com.example.youtubeapi.utils.Constant
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PlaylistDetailActivity : BaseActivity<BaseViewModel,ActivityPlaylistDetailBinding>() {
 
-    override val viewModel: PlaylistDetailViewModel by lazy{
-        ViewModelProvider(this).get(PlaylistDetailViewModel::class.java)
-    }
+    override val viewModel: PlaylistDetailViewModel by viewModel()
 
     override fun initViewModel() {
         super.initViewModel()
@@ -39,40 +35,35 @@ class PlaylistDetailActivity : BaseActivity<BaseViewModel,ActivityPlaylistDetail
 
     override fun checkInternet() {
         super.checkInternet()
-        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val builder = NetworkRequest.Builder().build()
-        connectivityManager.registerNetworkCallback(builder,
-            object : ConnectivityManager.NetworkCallback() {
-                override fun onAvailable(network: Network) {
-                    runOnUiThread {
-                        binding.titleTv.text =intent.getStringExtra(Constant.KEY_PLAYLIST_TITLE)
-                        binding.descTv.text =intent.getStringExtra(Constant.KEY_PLAYLIST_DESC)
-                        binding.checkInet.root.gone()
-                        binding.playlistRv.visible()
-                        binding.appBar.visible()
-                    }
+        InternetConnection.init(applicationContext)
+        InternetConnection.observe(this) { isConnected ->
+            if (isConnected) {
+                binding.apply {
+                    titleTv.text = intent.getStringExtra(Constant.KEY_PLAYLIST_TITLE)
+                    descTv.text = intent.getStringExtra(Constant.KEY_PLAYLIST_DESC)
+                    checkInet.root.gone()
+                    playlistRv.visible()
+                    appBar.visible()
                 }
-                override fun onLost(network: Network) {
-                    runOnUiThread {
-                        binding.seriesTv.gone()
-                        binding.appBar.gone()
-                        binding.floatBtn.gone()
-                        binding.checkInet.root.visible()
-                        binding.playlistRv.gone()
-                    }
+            } else {
+                binding.apply {
+                    seriesTv.gone()
+                    appBar.gone()
+                    floatBtn.gone()
+                    checkInet.root.visible()
+                    playlistRv.gone()
                 }
             }
-        )
-
+        }
     }
 
     private fun getData(playlistId: String) {
         viewModel.getPlaylistItems(playlistId,null).observe(this){
             when(it.status){
                 Status.SUCCESS->{
-                    initRv(it.data)
+                    initRv( it.data)
                     val videoSeries = it.data?.pageInfo?.totalResults.toString() + " video series"
-                    binding.seriesTv.text = videoSeries
+                     binding.seriesTv.text = videoSeries
                     viewModel.loading.postValue(false)
                 }
                 Status.ERROR-> {
@@ -95,9 +86,9 @@ class PlaylistDetailActivity : BaseActivity<BaseViewModel,ActivityPlaylistDetail
                 PlaylistDetailAdapter(it,this::clickListener) }
     }
 
-    private  fun clickListener(id: String){
+    private  fun clickListener(videoId: String){
         Intent(this, VideoActivity::class.java).apply {
-            putExtra(Constant.KEY_PLAYLIST_ID,id)
+            putExtra(Constant.VIDEO_ID,videoId)
             startActivity(this)
         }
     }

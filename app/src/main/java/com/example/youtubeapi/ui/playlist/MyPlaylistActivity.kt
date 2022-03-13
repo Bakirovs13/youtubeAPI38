@@ -1,29 +1,25 @@
 package com.example.youtubeapi.ui.playlist
 
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkRequest
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.youtubeapi.core.extensions.gone
 import com.example.youtubeapi.core.extensions.visible
+import com.example.youtubeapi.ui.InternetConnection
 import com.example.youtubeapi.core.network.result.Status
 import com.example.youtubeapi.core.uiBase.BaseActivity
 import com.example.youtubeapi.data.models.Playlist
 import com.example.youtubeapi.databinding.ActivityPlaylistBinding
 import com.example.youtubeapi.ui.playlistDetail.PlaylistDetailActivity
 import com.example.youtubeapi.utils.Constant
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MyPlaylistActivity : BaseActivity<MyPlaylistViewModel,ActivityPlaylistBinding>() {
 
 
-    override val viewModel: MyPlaylistViewModel by lazy{
-        ViewModelProvider(this).get(MyPlaylistViewModel::class.java)
-    }
+    override val viewModel: MyPlaylistViewModel by viewModel()
 
 
     override fun initViewModel() {
@@ -35,25 +31,17 @@ class MyPlaylistActivity : BaseActivity<MyPlaylistViewModel,ActivityPlaylistBind
 
     override fun checkInternet() {
         super.checkInternet()
-        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val builder = NetworkRequest.Builder().build()
-        connectivityManager.registerNetworkCallback(builder,
-            object : ConnectivityManager.NetworkCallback() {
-                override fun onAvailable(network: Network) {
-                    runOnUiThread {
-                        binding.networkLayout.root.gone()
-                        binding.recyclerMain.visible()
-                    }
-                }
-                override fun onLost(network: Network) {
-                    runOnUiThread {
-                        binding.networkLayout.root.visible()
-                        binding.recyclerMain.gone()
-                    }
-                }
+        InternetConnection.init(applicationContext)
+        InternetConnection.observe(this){ isConnected->
+            if (isConnected){
+                binding.networkLayout.root.gone()
+                binding.recyclerMain.visible()
+                initView()
+            }else{
+                binding.networkLayout.root.visible()
+                binding.recyclerMain.gone()
             }
-        )
-
+        }
     }
 
     override fun initListener() {
@@ -68,7 +56,7 @@ class MyPlaylistActivity : BaseActivity<MyPlaylistViewModel,ActivityPlaylistBind
         viewModel.getPlaylists().observe(this){
           when(it.status){
               Status.SUCCESS->{
-                  initRv(it.data)
+                  initRv(it.data )
                   viewModel.loading.postValue(false)
               }
               Status.ERROR-> {

@@ -1,12 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
-    android:theme="@style/Theme.Design.Light.NoActionBar"
-    tools:context=".ui.playlistDetail.PlaylistDetailActivity">
+    android:layout_height="match_parent">
+
+    <Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/back_tv"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="@color/red"
+                android:text="@string/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:drawableStartCompat="@drawable/ic_baseline_arrow_back" />
+
+            <TextView
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="@color/red"
+                android:text="@string/playlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </Toolbar>
+
+    <include
+        android:visibility="gone"
+        android:id="@+id/checkInet"
+        layout="@layout/check_internet"/>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+    android:theme="@style/Theme.Design.Light.NoActionBar">
 
     <ProgressBar
         android:visibility="gone"
@@ -19,10 +68,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <include
-        android:visibility="gone"
-        android:id="@+id/checkInet"
-        layout="@layout/check_internet"/>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -32,8 +77,8 @@
         tools:ignore="MissingConstraints">
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:expandedTitleMarginStart="64dp"
             app:collapsedTitleGravity="center"
             >
@@ -70,41 +115,6 @@
 
                     />
             </LinearLayout>
-            <Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/white"
-                >
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:gravity="center"
-                        android:id="@+id/back_tv"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:textColor="@color/red"
-                        android:text="@string/back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:drawableStartCompat="@drawable/ic_baseline_arrow_back" />
-
-                    <TextView
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:textColor="@color/red"
-                        android:text="@string/playlist"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -144,3 +154,5 @@
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</RelativeLayout>

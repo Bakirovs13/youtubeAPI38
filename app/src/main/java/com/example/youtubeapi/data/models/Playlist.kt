@@ -65,7 +65,7 @@ data class Default(
 data class ContentRating(val name: String = "")
 
 data class ContentDetails(
-
+    val videoId: String? = null,
     val itemCount:Int,
     var contentRating: ContentRating
 

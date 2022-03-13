@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@string/_32_video_series"
+            tools:text="@string/_32_video_series"
             android:textColor="@color/black" />
 
 

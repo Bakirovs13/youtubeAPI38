@@ -21,7 +21,7 @@ class PlaylistDetailAdapter(private val list:List<Items>, private val clickListe
             binding.playlistCountTv.text = items.snippet.publishedAt
 
             itemView.setOnClickListener {
-                clickListener(items.id)
+                clickListener(items.contentDetails.videoId.toString())
             }
         }
 
